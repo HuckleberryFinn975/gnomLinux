@@ -1,0 +1,25 @@
+SoundPlayer.init()
+enableEffects=false  length=14
+enableMusic=false  length=4
+supports.mixing=null
+RMS file not found
+There's no int parameter №15
+There's no string parameter №16
+There's no byte parameter №18
+There's no byte parameter №22
+There's no byte parameter №26
+There's no int parameter №6
+There's no int parameter №5
+There's no short parameter №7
+There's no int parameter №10
+There's no int parameter №11
+There's no int parameter №12
+There's no int parameter №19
+There's no int parameter №1
+There's no long parameter №13
+There's no string parameter №17
+There's no string parameter №2
+There's no string parameter №2
+There's no string parameter №17
+SoundPlayer.playMusic() musicID=3
+SoundPlayer.playEffect() effectID=1
