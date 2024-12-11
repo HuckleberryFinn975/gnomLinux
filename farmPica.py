@@ -14,6 +14,7 @@ else:
     bagSize = 35 
 ch = MainClass(race, 0)
 ch.savePID()
+ch.replaceCamel(noCamel = True)
 point, timeUntilRestart, bagChecked = "right", 600, False
 
 routePica1 = (18, 17), (16, 7)

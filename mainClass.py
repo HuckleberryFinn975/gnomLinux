@@ -1860,6 +1860,296 @@ class MainClass:
 			return True
 		print("  EXXXCEPTION COMBAT | MORE THAN 50 MOVES")
 		return False
+	def combatMix(self, enemyUnit = "Troll"):
+		print("Run Combat Mix Method")
+		moveNumber, shotCounter, secodMagic = 1, 0, False
+		def useMagic(squad = 1):
+			print("Use Magic")
+			for _ in range(3):
+				self.rightSoft()
+				buttonMagic = pyautogui.locateOnScreen(f"img/collection/buttonMagic.png", minSearchTime=2, region=(350,0,780,1024), confidence=.9)
+				if buttonMagic:
+					print("  Found buttonMagic | Click")
+					click(buttonMagic)
+					sleep(.3)
+					self.leftSoft()
+					for _ in range(3):
+						sleep(.3)
+						if squad == 1:
+							click(380, 585)
+						elif squad == 2:
+							click(430, 585)
+						applyMagic = pyautogui.locateCenterOnScreen(f"img/collection/applyMagic.png", minSearchTime=2, region=(0, 500, 700, 524), confidence=.92)
+						if applyMagic:
+							print("      Found Apply Magic | Click")
+							click(applyMagic[0], applyMagic[1] - 100)
+							for _ in range(3):
+								sleep(1)
+								if self.logHandler("client -> server: 122 wait for: 0"):
+									print("        The use of magic is successful")
+									return True
+						else:
+							print("      Don't see APPLY MAGIC")
+				else:
+					print("  Don't see MAGIC BUTTON")
+				if self.logHandler("client -> server: 122 wait for: 0"):
+					print("        The use of magic is successful")
+					return True
+			print("    USE MAGIC FAILED | FALSE")
+			return False
+		for _ in range(15):
+			timeBefor = time.time()
+			enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
+			enemyList = list(enemies)
+			if enemyList:
+				print("  Found Trolls")
+				camels = pyautogui.locateAllOnScreen(f"img/collection/enemyCamel.png", region=(300,300,370,350), confidence=.94)
+				camelList = list(camels)
+				if camelList:
+					if shotCounter == 0 and moveNumber == 1:
+						useMagic(1)
+					if shotCounter > 4:
+						if not secodMagic and useMagic(2):
+							secodMagic = True
+				for _ in range(25):
+					if moveNumber > 1:
+						enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
+					if enemyList:
+						if len(enemyList) > 1:
+							print("Squads more than 1")
+							if moveNumber > 1:
+								while time.time() <= (timeBefor + 1 + random.randint(1,2)/10):
+									sleep(.05)
+							timeBefor = time.time()
+							click(enemyList[1])
+							click(enemyList[0])
+							pyautogui.moveTo(100, 100)
+							moveNumber += 1
+							enemyList = list(enemies)
+						else:
+							print("Only 1 squad")
+							if moveNumber > 1:
+								while time.time() <= (timeBefor + 1 + random.randint(1,2)/10):
+									sleep(.05)
+							timeBefor = time.time()
+							click(enemyList[0])
+							pyautogui.moveTo(100, 100)
+							moveNumber += 1
+							enemyList = list(enemies)
+						if self.logHandler("client -> server: 113 wait for: 0"):
+							print("          hit successfully")
+							shotCounter += 1
+						if self.logHandler("server -> client: 114"):
+							print("    The battle is completed successfully")
+							sleep(1.5)
+							clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+							if clanMessage:
+								self.leftSoft()
+							return True
+					else:
+						camels = pyautogui.locateAllOnScreen(f"img/collection/enemyCamel.png", region=(300,300,370,350), confidence=.94)
+						camelList = list(camels)
+						if camelList:
+							print("See Camels")
+							if shotCounter > 5:
+								if not secodMagic and useMagic(2):
+									secodMagic = True
+							enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
+							if len(camelList) > 1:
+								print("Camels more than 1")
+								timeBefor = time.time()
+								click(camelList[1])
+								click(camelList[0])
+								pyautogui.moveTo(100, 100)
+								moveNumber += 1
+								enemyList = list(enemies)
+							else:
+								print("Only 1 squad Camel")
+								timeBefor = time.time()
+								click(camelList[0])
+								pyautogui.moveTo(100, 100)
+								moveNumber += 1
+								enemyList = list(enemies)
+							if self.logHandler("client -> server: 113 wait for: 0"):
+								print("          hit successfully")
+								shotCounter += 1
+						sleep(.3)
+						enemyList = list(enemies)
+						if self.logHandler("server -> client: 114"):
+							print("    The battle is completed successfully")
+							sleep(1.5)
+							clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+							if clanMessage:
+								self.leftSoft()
+							return True
+			else:
+				print("      Don't see Trolls")
+				camels = pyautogui.locateAllOnScreen(f"img/collection/enemyCamel.png", region=(300,300,370,350), confidence=.94)
+				camelList = list(camels)
+				if camelList:
+					print("See Camels")
+					if shotCounter > 5:
+						if not secodMagic and useMagic(2):
+							secodMagic = True
+					enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
+					if len(camelList) > 1:
+						print("Camels more than 1")
+						timeBefor = time.time()
+						click(camelList[1])
+						click(camelList[0])
+						pyautogui.moveTo(100, 100)
+						moveNumber += 1
+						enemyList = list(enemies)
+					else:
+						print("Only 1 squad Camel")
+						timeBefor = time.time()
+						click(camelList[0])
+						pyautogui.moveTo(100, 100)
+						moveNumber += 1
+						enemyList = list(enemies)
+					if self.logHandler("client -> server: 113 wait for: 0"):
+						print("          hit successfully")
+						shotCounter += 1
+					if self.logHandler("server -> client: 114"):
+						print("    The battle is completed successfully")
+						sleep(1)
+						clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+						if clanMessage:
+							self.leftSoft()
+						return True
+			if self.logHandler("server -> client: 114"):
+				print("    The battle is completed successfully")
+				sleep(1.5)
+				clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+				if clanMessage:
+					self.leftSoft()
+				return True
+			if self.clMessageCheckImage():
+				continue
+		if self.logHandler("server -> client: 114"):
+			print("    The battle is completed successfully")
+			sleep(1.5)
+			clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+			if clanMessage:
+				self.leftSoft()
+			return True
+		print("  EXXXCEPTION COMBAT | MORE THAN 50 MOVES")
+		return False
+	def combatCamel(self, enemyUnit = "Camel"):
+		print("Run Combat Camel Method")
+		moveNumber, shotCounter, secodMagic = 1, 0, False
+		def useMagic(squad = 1):
+			print("Use Magic")
+			for _ in range(3):
+				self.rightSoft()
+				buttonMagic = pyautogui.locateOnScreen(f"img/collection/buttonMagic.png", minSearchTime=2, region=(350,0,780,1024), confidence=.9)
+				if buttonMagic:
+					print("  Found buttonMagic | Click")
+					click(buttonMagic)
+					sleep(.3)
+					self.leftSoft()
+					sleep(.3)
+					for _ in range(2):
+						if squad == 1:
+							click(380, 585)
+						elif squad == 2:
+							click(430, 585)
+						applyMagic = pyautogui.locateCenterOnScreen(f"img/collection/applyMagic.png", minSearchTime=2, region=(0, 500, 700, 524), confidence=.92)
+						if applyMagic:
+							print("      Found Apply Magic | Click")
+							click(applyMagic[0], applyMagic[1] - 100)
+							for _ in range(3):
+								sleep(1)
+								if self.logHandler("client -> server: 122 wait for: 0"):
+									print("        The use of magic is successful")
+									return True
+						else:
+							print("      Don't see APPLY MAGIC")
+				else:
+					print("  Don't see MAGIC BUTTON")
+				if self.logHandler("client -> server: 122 wait for: 0"):
+					print("        The use of magic is successful")
+					return True
+			print("    USE MAGIC FAILED | FALSE")
+			return False
+		for _ in range(15):
+			timeBefor = time.time()
+			enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
+			enemyList = list(enemies)
+			if enemyList:
+				print(f"  Found {enemyUnit}s")
+				for _ in range(25):
+					if moveNumber > 1:
+						enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
+					if shotCounter == 0 and moveNumber == 1:
+						useMagic(1)
+					if shotCounter > 2:
+						if not secodMagic and useMagic(2):
+							secodMagic = True
+					if enemyList:
+						if len(enemyList) > 1:
+							print("Squads more than 1")
+							if moveNumber > 1:
+								while time.time() <= (timeBefor + random.randint(1,2)/10):
+									sleep(.05)
+							timeBefor = time.time()
+							click(enemyList[0])
+							click(enemyList[1])
+							pyautogui.moveTo(100, 100)
+							moveNumber += 1
+							enemyList = list(enemies)
+						else:
+							print("Only 1 squad")
+							if moveNumber > 1:
+								while time.time() <= (timeBefor + random.randint(1,2)/10):
+									sleep(.05)
+							timeBefor = time.time()
+							click(enemyList[0])
+							pyautogui.moveTo(100, 100)
+							moveNumber += 1
+							enemyList = list(enemies)
+						if self.logHandler("client -> server: 113 wait for: 0"):
+							print("          hit successfully")
+							sleep(2)
+							shotCounter += 1
+						if self.logHandler("server -> client: 114"):
+							print("    The battle is completed successfully")
+							sleep(1)
+							clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+							if clanMessage:
+								self.leftSoft()
+							return True
+					else:
+						print("      Don't see ENEMIES")
+						enemyList = list(enemies)
+						sleep(.3)
+						if self.logHandler("server -> client: 114"):
+							print("    The battle is completed successfully")
+							sleep(1.5)
+							clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+							if clanMessage:
+								self.leftSoft()
+							return True
+			else:
+				print("      Don't see ENEMIES")
+			if self.logHandler("server -> client: 114"):
+				print("    The battle is completed successfully")
+				sleep(1.5)
+				clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+				if clanMessage:
+					self.leftSoft()
+				return True
+			if self.clMessageCheckImage():
+				continue
+		if self.logHandler("server -> client: 114"):
+			print("    The battle is completed successfully")
+			sleep(1.5)
+			clanMessage = pyautogui.locateOnScreen(f"img/collection/clanMessage.png", minSearchTime=3, region=(0,500,1280, 524), confidence=.85)
+			if clanMessage:
+				self.leftSoft()
+			return True
+		print("  EXXXCEPTION COMBAT | MORE THAN 50 MOVES")
+		return False
 	def startMove(self, firstKey = "down"):
 		print("Start move ")
 		for _ in range(2):
@@ -2147,7 +2437,7 @@ class MainClass:
 			return 'NOBOTS'
 	def searchBotFarm(self, enemy = "Dragon", side = "1", region=(0, 0, 1200, 1200)):
 		if side == "1":
-			window_center_x, window_center_y = 1280, 0
+			window_center_x, window_center_y = 960, 0
 		elif side == "2":
 			window_center_x, window_center_y = 0, 1024
 		elif side == "3":
@@ -2486,7 +2776,7 @@ class MainClass:
 		self.send_message("    TELEPORTATION FAILED | FALSE", self.token2)
 		self.rightSoft()
 		return False
-	def farmingGold(self, unit = "Camel", magic = True, magnetAngle = "1", region=(0, 0, 1200, 1200)):
+	def farmingGold(self, unit = "Camel", magic = False, magnetAngle = "1", region=(0, 0, 1200, 1200), camel = False):
 		print("Run Farm method")
 		for _ in range(3):
 			sb = self.searchBotFarm(enemy = unit, side = magnetAngle, region = region)
@@ -2512,16 +2802,28 @@ class MainClass:
 							elif self.logHandler("server -> client: 24"):
 								print("    Combat found")
 								if self.searchBattle():
-									if unit == "Camel":
-										if self.combatSimple():
+									if camel:
+										if self.combatCamel():
 											return "Battle"
 										else:
-											return "FailedBattle"
-									elif unit == "Dragon":
-										if self.combatSimple():
-											return "Battle"
-										else:
-											return "FailedBattle"
+											return "FailedBattle"										
+									else:
+										if unit == "Camel":
+											if magic:
+												if self.combatMix():
+													return "Battle"
+												else:
+													return "FailedBattle"
+											else:
+												if self.combatSimple():
+													return "Battle"
+												else:
+													return "FailedBattle"
+										elif unit == "Dragon":
+											if self.combatSimple():
+												return "Battle"
+											else:
+												return "FailedBattle"
 						print("  EXCEPTION col2")
 					sleep(1)
 				print("  EXCEPTION col1")
@@ -2531,10 +2833,16 @@ class MainClass:
 				print("  Character was attacked by an npc")
 				if self.searchBattle():
 					if unit == "Camel":
-						if self.combatSimple():
-							return "Battle"
+						if magic:
+							if self.combatMix():
+								return "Battle"
+							else:
+								return "FailedBattle"
 						else:
-							return "FailedBattle"
+							if self.combatSimple():
+								return "Battle"
+							else:
+								return "FailedBattle"
 					elif unit == "Dragon":
 						if self.combatSimple():
 							return "Battle"
@@ -2790,7 +3098,7 @@ class MainClass:
 					self.moveOnMap(coors[0] + deltaX, coors[1] + deltaY)
 		self.send_message("  Route completion Successful", self.token2)
 		return True
-	def followTheRoutePumpkin(self, route, unit = "Dragon", collect = False, exactCoors = (-1, -1), side = "2", zero = False, bats = True):
+	def followTheRoutePumpkin(self, route, unit = "Dragon", collect = False, exactCoors = (-1, -1), side = "2", zero = False, bats = True, magic = False):
 		self.send_message("Move along the route", self.token2)
 		point = 0
 		if exactCoors[0] == 0 and exactCoors[1] == 0:
@@ -2819,7 +3127,7 @@ class MainClass:
 					for k in range(2):
 						if bats and k > 0:
 							break
-						fg = self.farmingGold(unit = unit, magic = False, magnetAngle = side)
+						fg = self.farmingGold(unit = unit, magic = magic, magnetAngle = side)
 						if fg == "NOBOTS":
 							if not bats:
 								break
@@ -3162,3 +3470,16 @@ class MainClass:
 				self.relogin()
 				attempt += 1
 				continue
+	def replaceCamel(self, noCamel = True):
+		try:
+			client, folder = data["images"][self.race], "Camel"
+			if noCamel:
+				folder = "noCamel"
+			result = subprocess.Popen(["7z", "a", f"/home/{self.username}/Desktop/gnomLinux/Clients/{client}.jar", f"./img/{folder}/*"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+			output, errors = result.communicate()
+			print("Output: ", output.decode("utf-8"))
+			print("Errors: ", errors.decode("utf-8"))
+		except FileNotFoundError:
+			print("File not found")
+		except Exception as e:
+			print("Another error: ", e)
