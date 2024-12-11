@@ -2049,7 +2049,7 @@ class MainClass:
 					sleep(.3)
 					self.leftSoft()
 					sleep(.3)
-					for _ in range(2):
+					for _ in range(1):
 						if squad == 1:
 							click(380, 585)
 						elif squad == 2:
@@ -2093,8 +2093,8 @@ class MainClass:
 								while time.time() <= (timeBefor + random.randint(1,2)/10):
 									sleep(.05)
 							timeBefor = time.time()
-							click(enemyList[0])
 							click(enemyList[1])
+							click(enemyList[0])
 							pyautogui.moveTo(100, 100)
 							moveNumber += 1
 							enemyList = list(enemies)

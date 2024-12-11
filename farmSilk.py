@@ -27,6 +27,7 @@ pointsXL = (21, 10), (21, 11), (21, 12), (20, 10), (20, 11), (20, 12)
 routeTreeDown = ((33, 14), (35, 26), (29, 36), (25, 44))
 routeTreeCenter = ((23, 12), (27, 20))
 routeCenterDown = ((22, 28), (28, 39))
+routeTreeCenter2 = ((28, 27), )
 routeDown = ((31, 12), )
 routeDown2 = ((32, 23), )
 routeDown3 = ((23, 31), )
@@ -39,12 +40,12 @@ if ch.checkInTheCity():
         if ch.defineTheCityImage('TreeAbode'):
             def checkBagAndGo(notCheck = False):
                 if notCheck:
-                    ch.emptyBackpack(bagSize = bagSize)
+                    ch.emptyBackpack(bagSize = bagSize, magicInTheBag = True)
                 else:
                     bgfull = ch.bagFullness(bagSize = bagSize)
                     if bgfull == 'FULL':
                         ch.outOfCharacter()
-                        ch.emptyBackpack(bagSize = bagSize)
+                        ch.emptyBackpack(bagSize = bagSize, magicInTheBag = True)
                     elif bgfull == 'NOTFULL' or  bgfull == 'FALSE':
                         ch.outOfCharacter()
                 ch.leaveTheCity()
@@ -145,12 +146,12 @@ if ch.checkInTheCity():
         if ch.defineTheCityImage('Xinta'):
             def checkBagAndGo(notCheck = False):
                 if notCheck:
-                    ch.emptyBackpack(bagSize = bagSize)
+                    ch.emptyBackpack(bagSize = bagSize, magicInTheBag = True)
                 else:
                     bgfull = ch.bagFullness(bagSize = bagSize)
                     if bgfull == 'FULL':
                         ch.outOfCharacter()
-                        ch.emptyBackpack(bagSize = bagSize)
+                        ch.emptyBackpack(bagSize = bagSize, magicInTheBag = True)
                     elif bgfull == 'NOTFULL' or  bgfull == 'FALSE':
                         ch.outOfCharacter()
                 ch.leaveTheCity()
@@ -249,12 +250,12 @@ if ch.checkInTheCity():
         if ch.defineTheCityImage('TreeAbode'):
             def checkBagAndGo(notCheck = False):
                 if notCheck:
-                    ch.emptyBackpack(bagSize = bagSize)
+                    ch.emptyBackpack(bagSize = bagSize, magicInTheBag = True)
                 else:
                     bgfull = ch.bagFullness(bagSize = bagSize)
                     if bgfull == 'FULL':
                         ch.outOfCharacter()
-                        ch.emptyBackpack(bagSize = bagSize)
+                        ch.emptyBackpack(bagSize = bagSize, magicInTheBag = True)
                     elif bgfull == 'NOTFULL' or  bgfull == 'FALSE':
                         ch.outOfCharacter()
                 ch.leaveTheCity()
@@ -292,7 +293,7 @@ if ch.checkInTheCity():
                     elif bgfull == 'NOTFULL':
                         fromBegin = False
                         ch.outOfCharacterMap()
-                        bagChecked = False
+                        bagChecked = True
                     elif bgfull == 'FALSE':
                         fromBegin = False
                         ch.outOfCharacterMap()
@@ -312,7 +313,33 @@ if ch.checkInTheCity():
                         fails += 1 
                     elif farmGold == "NOBOTS":
                         fails += 1
-                        break
+                        if ch.noNPC >= 3:
+                            break
+                    elif farmGold == "FailedBattle":
+                        fails += 1 
+                        lap += 1
+                        bagChecked = False
+                if fromBegin:
+                    fromBegin = False
+                    continue
+                ch.followTheRoutePumpkin(routeTreeCenter2, unit = "Camel", collect=False)
+                for _ in range(10):
+                    if lap > 0 and lap % 5 == 0:
+                        if bagAction() == "FULL":
+                            break
+                    farmGold = ch.farmingGold(magic = False, magnetAngle = side, camel = True) 
+                    if farmGold == "Battle":
+                        lap += 1
+                        fails = 0
+                        bagChecked = False
+                    elif farmGold == "KILLED":
+                        fails = 0
+                    elif farmGold == "FAILED":
+                        fails += 1 
+                    elif farmGold == "NOBOTS":
+                        fails += 1
+                        if ch.noNPC >= 3:
+                            break
                     elif farmGold == "FailedBattle":
                         fails += 1 
                         lap += 1
@@ -339,7 +366,8 @@ if ch.checkInTheCity():
                         fails += 1 
                     elif farmGold == "NOBOTS":
                         fails += 1
-                        break
+                        if ch.noNPC >= 3:
+                            break
                     elif farmGold == "FailedBattle":
                         fails += 1 
                         lap += 1
@@ -363,7 +391,8 @@ if ch.checkInTheCity():
                         fails += 1 
                     elif farmGold == "NOBOTS":
                         fails += 1
-                        break
+                        if ch.noNPC >= 3:
+                            break
                     elif farmGold == "FailedBattle":
                         fails += 1 
                         lap += 1
@@ -387,7 +416,8 @@ if ch.checkInTheCity():
                         fails += 1 
                     elif farmGold == "NOBOTS":
                         fails += 1
-                        break
+                        if ch.noNPC >= 3:
+                            break
                     elif farmGold == "FailedBattle":
                         fails += 1 
                         lap += 1
@@ -437,7 +467,8 @@ if ch.checkInTheCity():
                         fails += 1 
                     elif farmGold == "NOBOTS":
                         fails += 1
-                        break
+                        if ch.noNPC >= 3:
+                            break
                     elif farmGold == "FailedBattle":
                         fails += 1 
                         lap += 1
@@ -461,7 +492,8 @@ if ch.checkInTheCity():
                         fails += 1 
                     elif farmGold == "NOBOTS":
                         fails += 1
-                        break
+                        if ch.noNPC >= 3:
+                            break
                     elif farmGold == "FailedBattle":
                         fails += 1 
                         lap += 1
@@ -470,6 +502,15 @@ if ch.checkInTheCity():
                     fromBegin = False
                     continue
                 sleep(.2)
+                process.terminate()
+                ch.relogin()
+                farmStartTime = time.time()
+                process = subprocess.Popen(['python3', 'walkClanMessages.py'])
+                ch.activate()
+                if ch.checkInTheCity():
+                    if ch.defineTheCityImage('TreeAbode'):
+                        checkBagAndGo()
+                        bagChecked = False
         else:
             process.terminate()
             print("ANOTHER CITY")
