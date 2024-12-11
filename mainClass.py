@@ -1918,7 +1918,7 @@ class MainClass:
 						if len(enemyList) > 1:
 							print("Squads more than 1")
 							if moveNumber > 1:
-								while time.time() <= (timeBefor + 1 + random.randint(1,2)/10):
+								while time.time() <= (timeBefor + random.randint(1,2)/10):
 									sleep(.05)
 							timeBefor = time.time()
 							click(enemyList[1])
@@ -1929,7 +1929,7 @@ class MainClass:
 						else:
 							print("Only 1 squad")
 							if moveNumber > 1:
-								while time.time() <= (timeBefor + 1 + random.randint(1,2)/10):
+								while time.time() <= (timeBefor + random.randint(1,2)/10):
 									sleep(.05)
 							timeBefor = time.time()
 							click(enemyList[0])
@@ -1938,6 +1938,7 @@ class MainClass:
 							enemyList = list(enemies)
 						if self.logHandler("client -> server: 113 wait for: 0"):
 							print("          hit successfully")
+							sleep(2)
 							shotCounter += 1
 						if self.logHandler("server -> client: 114"):
 							print("    The battle is completed successfully")
@@ -1972,6 +1973,7 @@ class MainClass:
 								enemyList = list(enemies)
 							if self.logHandler("client -> server: 113 wait for: 0"):
 								print("          hit successfully")
+								sleep(2)
 								shotCounter += 1
 						sleep(.3)
 						enemyList = list(enemies)
@@ -1988,7 +1990,7 @@ class MainClass:
 				camelList = list(camels)
 				if camelList:
 					print("See Camels")
-					if shotCounter > 5:
+					if shotCounter > 4:
 						if not secodMagic and useMagic(2):
 							secodMagic = True
 					enemies = pyautogui.locateAllOnScreen(f"img/collection/enemy{enemyUnit}.png", region=(300,300,370,350), confidence=.94)
@@ -2009,6 +2011,7 @@ class MainClass:
 						enemyList = list(enemies)
 					if self.logHandler("client -> server: 113 wait for: 0"):
 						print("          hit successfully")
+						sleep(2)
 						shotCounter += 1
 					if self.logHandler("server -> client: 114"):
 						print("    The battle is completed successfully")
