@@ -37,7 +37,7 @@ if ch.checkInTheCity():
                 elif bgfull == 'NOTFULL':
                     ch.outOfCharacter()
             ch.leaveTheCity()
-            ch.startMove(firstKey='up')
+            ch.startMove(firstKey='left')
             ch.followTheRoutePumpkin(random.choice((routePica1, routePica2, routePica3)))
         
         checkBagAndGo()
@@ -108,7 +108,7 @@ if ch.checkInTheCity():
                         checkBagAndGo()
                         bagChecked = False
             if fails >= 10:
-                ch.send_message("MORE 10 FAILS | sleep 30 sec", ch.token1, timeOut = ch.to1)
+                ch.send_message("MORE 10 FAILS | sleep 30 sec", ch.token2, timeOut = ch.to1)
                 sleep(30)
                 process.terminate()
                 ch.relogin()
