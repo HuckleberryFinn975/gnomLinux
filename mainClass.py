@@ -51,7 +51,7 @@ class MainClass:
 	def moveTerminal(self):
 		try:
 			subprocess.run(f'wmctrl -r "{self.username}@" -e 0,1050,0,400,900', shell=True, check=True)
-			sleep(3)
+			sleep(.3)
 		except Exception as ex:
 			print(ex)
 	def killWindow(self):
@@ -65,7 +65,7 @@ class MainClass:
 		print(f"{data['images'][self.race]} | setting Window")
 		try:
 			subprocess.run(f'''wmctrl -r "{data['titles'][self.race]}" -e 0,0,0,950,1000''', shell=True, check=True)
-			sleep(3)
+			sleep(1.5)
 		except Exception as ex:
 			print(ex)
 	def runWindow(self):
@@ -77,7 +77,11 @@ class MainClass:
 			self.send_message(f"Running {data['images'][self.race]} | sleep 7...", self.token2)
 			with open(log_file_path, "a") as log_file:
 				subprocess.run(command, shell = True, stdout=log_file, stderr=subprocess.DEVNULL)
-			sleep(7)
+			if pyautogui.locateOnScreen("img/collection/LOGO.png", minSearchTime = 7, region = (0, 0, 900, 900), confidence=.85):
+				print("See 'LOGO.png'")
+				return True
+			else:
+				print("DONT SEE 'LOGO.png'")
 		except Exception as ex:
 			print(ex)
 	def relogin(self):
@@ -86,7 +90,7 @@ class MainClass:
 		self.runWindow()
 		self.setWindow()
 		press('enter')
-		sleep(5)
+		sleep(2)
 	@classmethod
 	def rightSoft(self):
 		click(850, 930)
@@ -187,7 +191,7 @@ class MainClass:
 	def checkInTheCity(self):
 		print("Search inTheCity")
 		for _ in range(6):
-			inTheCity = pyautogui.locateOnScreen(f"img/collection/inTheCity.png", minSearchTime=4, region=(0,0,1280, 1024), confidence=.8)
+			inTheCity = pyautogui.locateOnScreen(f"img/collection/inTheCity.png", minSearchTime=7, region=(0,0,1280, 1024), confidence=.8)
 			if inTheCity:
 				self.send_message("  The character is in the city", self.token2)
 				return True
@@ -3397,6 +3401,7 @@ class MainClass:
 			return False
 		def sellAll():
 			if magicInTheBag:
+				sleep(.5)
 				press('right')
 			sleep(.2)
 			for _ in range(bagSize + 5):
