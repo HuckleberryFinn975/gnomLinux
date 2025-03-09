@@ -2180,6 +2180,32 @@ class MainClass:
 				continue
 		print("startMove FAILED | FALSE")
 		return False
+	def startMoveMulti(self, moves):
+		print("Start move-Multi ")
+		for _ in range(2):
+			currentMove = random.choice(moves).split()
+			print(f'Current Move is {currentMove}')
+			arrows = ('up', 'left', 'right', "down")
+			for arrow in arrows:
+				sleep(.3)
+				press(currentMove)
+				walk = pyautogui.locateOnScreen(f"img/collection/walk.png", minSearchTime = 1.5, region=(0,300,780,724), confidence=.92)
+				if walk:
+					print("    See walkButtn | Click")
+					click(walk)
+					sleep(.5)
+					if self.logWalkHandler():
+						print("      StartMove-Multi succesful")
+						return True
+				else:
+					print("    Don't  see walkButtn | toCenter")
+					self.toCenter()
+				print(f"  Current arrow is {arrow} | press")
+				press(arrow)
+			if self.clMessageCheckImage():
+				continue
+		print("startMoveMulti FAILED | FALSE")
+		return False
 	def moveOnMap(self, x, y, npcAttack = True, iters = 3):
 		print("Try to move on the map")
 		attempts = 0

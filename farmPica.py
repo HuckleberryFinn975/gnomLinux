@@ -3,6 +3,7 @@ import subprocess
 import time
 from time import sleep
 import random
+from picaMoves import picaMoves, picaRoutes
 
 MainClass.moveTerminal()
 race = input("\t1 - Elf\n\t2 - Orc\n\t3 - Dead\n\t4 - Human\n\t5 - Dwarf\nSelect race: ")
@@ -37,8 +38,8 @@ if ch.checkInTheCity():
                 elif bgfull == 'NOTFULL':
                     ch.outOfCharacter()
             ch.leaveTheCity()
-            ch.startMove(firstKey='left')
-            ch.followTheRoutePumpkin(random.choice((routePica1, routePica2, routePica3)))
+            ch.startMoveMulti(picaMoves)
+            ch.followTheRoutePumpkin(random.choice(picaRoutes))
         
         checkBagAndGo()
         lap, side, fails = 0, "1", 0
